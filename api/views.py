@@ -9,7 +9,7 @@ from api.serializers import ReadOnlyUserSerializer, WriteOnlyUserSerializer
 class UserViewSet(viewsets.ModelViewSet):
     """Класс, работающий с профилями пользователей"""
     queryset = User.objects.all()
-    permission_classes = (IsAdminUser | ReadOnly)
+    permission_classes = (IsAdminUser | ReadOnly,)
 
     def get_serializer_class(self):
         """Выбирает сериализатор в зависимости от задачи"""
