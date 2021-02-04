@@ -1,5 +1,6 @@
 from api.models import User
 from rest_framework import serializers
+from django.contrib.auth.hashers import make_password
 
 
 class ReadOnlyUserSerializer(serializers.ModelSerializer):
@@ -25,3 +26,6 @@ class WriteOnlyUserSerializer(serializers.ModelSerializer):
             'is_active': {'required': True},
             'password': {'required': True}
         }
+
+    def validate_password(self, value: str) -> str:
+        return make_password(value)
