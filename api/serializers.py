@@ -1,10 +1,9 @@
-from rest_framework import serializers
-
 from api.models import User
+from rest_framework import serializers
 
 
 class ReadOnlyUserSerializer(serializers.ModelSerializer):
-    """Сериализатор дляпоказа профиля пользователя"""
+    """Сериализатор для показа профиля пользователя"""
     class Meta:
         model = User
         fields = ('id', 'username', 'first_name', 'last_name', 'is_active', 'last_login', 'is_superuser',)

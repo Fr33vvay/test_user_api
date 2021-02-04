@@ -1,18 +1,30 @@
-from rest_framework import filters, viewsets
-from rest_framework.permissions import IsAdminUser
-
 from api.models import User
-from api.permissions import ReadOnly
+from api.permissions import IsOwnerOrReadOnly
 from api.serializers import ReadOnlyUserSerializer, WriteOnlyUserSerializer
+from rest_framework import filters, viewsets
+from rest_framework.permissions import IsAdminUser, IsAuthenticatedOrReadOnly
 
 
 class UserViewSet(viewsets.ModelViewSet):
     """Класс, работающий с профилями пользователей"""
     queryset = User.objects.all()
-    permission_classes = (IsAdminUser | ReadOnly,)
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['username', 'first_name', 'last_name', ]
+    ordering_fields = ['username']
 
     def get_serializer_class(self):
         """Выбирает сериализатор в зависимости от задачи"""
-        if self.action in ('create', 'update', 'partial_update'):
+        if self.action in ('create', 'update', 'partial_update', 'delete',):
             return WriteOnlyUserSerializer
         return ReadOnlyUserSerializer
+
+    def get_permissions(self):
+        """
+        Пользователи могут создавать профили других пользователей,
+        но не удалять или изменять их
+        """
+        if self.action in ('update', 'partial_update', 'delete',):
+            permission_classes = (IsAdminUser | IsOwnerOrReadOnly,)
+        else:
+            permission_classes = IsAuthenticatedOrReadOnly
+        return [permission() for permission in permission_classes]
