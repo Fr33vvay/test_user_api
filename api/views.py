@@ -1,10 +1,9 @@
-from rest_framework.filters import SearchFilter, OrderingFilter
-
 from api.models import User
 from api.permissions import IsOwnerOrReadOnly
 from api.serializers import ReadOnlyUserSerializer, WriteOnlyUserSerializer
 from rest_framework import viewsets
-from rest_framework.permissions import IsAdminUser, IsAuthenticatedOrReadOnly
+from rest_framework.filters import OrderingFilter, SearchFilter
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 
 class UserViewSet(viewsets.ModelViewSet):
