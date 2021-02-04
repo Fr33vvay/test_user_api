@@ -8,12 +8,6 @@ class ReadOnlyUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'username', 'first_name', 'last_name', 'is_active', 'last_login', 'is_superuser',)
-        extra_kwargs = {
-            'username': {'required': True},
-            'is_active': {'required': True},
-            'last_login': {'read_only': True},
-            'is_superuser': {'read_only': True}
-        }
 
 
 class WriteOnlyUserSerializer(serializers.ModelSerializer):

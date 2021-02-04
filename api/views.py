@@ -3,7 +3,7 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from api.models import User
 from api.permissions import IsOwnerOrReadOnly
 from api.serializers import ReadOnlyUserSerializer, WriteOnlyUserSerializer
-from rest_framework import filters, viewsets
+from rest_framework import viewsets
 from rest_framework.permissions import IsAdminUser, IsAuthenticatedOrReadOnly
 
 
@@ -26,7 +26,7 @@ class UserViewSet(viewsets.ModelViewSet):
         но не удалять или изменять их
         """
         if self.action in ('update', 'partial_update', 'destroy',):
-            permission_classes = [IsAdminUser | IsOwnerOrReadOnly]
+            permission_classes = [IsOwnerOrReadOnly]
         else:
             permission_classes = [IsAuthenticatedOrReadOnly]
         return [permission() for permission in permission_classes]
